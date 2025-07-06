@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { getUser, logoutUser } from "../utility/localStorage";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
+import TaskFilter from "./TaskFilter";
 
 
 const Dashboard = ({onLogout}) => {
@@ -52,6 +53,12 @@ const Dashboard = ({onLogout}) => {
         setTask(task.filter(t => t.id !== taskId));
     }
 
+    const taskCounts = {
+        all: task.length,
+        pending: task.filter(t => !t.completed).length,
+        completed: task.filter(t => t.completed).length
+    }
+
     return (
         <div className="min-h-screen bg-gray-50">
             {/* Header */}
@@ -75,6 +82,11 @@ const Dashboard = ({onLogout}) => {
             {/* Main */}
             <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <TaskForm onAddTask={handleAddTask}/>
+                <TaskFilter
+                    activeFilter={activeFilter}
+                    onFilterChange={setActiveFilter}
+                    taskCounts={taskCounts}
+                />
                 <TaskList
                     task={filteredTask}
                     onToggleComplete={handleToggleComplete}
