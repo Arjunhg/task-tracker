@@ -6,6 +6,7 @@ const TaskForm = ({onAddTask}) => {
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
     const [priority, setPriority] = useState('low'); // Default priority
+    const [dueDate, setDueDate] = useState(''); // Due date state
     const [error, setError] = useState('');
 
     const handleSubmit = (e) => {
@@ -20,7 +21,8 @@ const TaskForm = ({onAddTask}) => {
             id: Date.now(),
             title: title.trim(),
             description: description.trim(),
-            priority: priority, // Add priority to task object
+            priority: priority,
+            dueDate: dueDate || null, // Add due date to task object
             completed: false,
             createdAt: new Date().toISOString(),
         }
@@ -30,6 +32,7 @@ const TaskForm = ({onAddTask}) => {
         setTitle('');
         setDescription('');
         setPriority('low'); // Reset priority to default
+        setDueDate(''); // Reset due date
         setError('');
     }
 
@@ -102,6 +105,19 @@ const TaskForm = ({onAddTask}) => {
                             </button>
                         ))}
                     </div>
+                </div>
+
+                <div>
+                    <label htmlFor="dueDate" className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-300">
+                        Due Date (Optional)
+                    </label>
+                    <input
+                        type="datetime-local"
+                        id="dueDate"
+                        value={dueDate}
+                        onChange={(e) => setDueDate(e.target.value)}
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-indigo-500 focus:border-indigo-500 transition-colors duration-300"
+                    />
                 </div>
 
                 {

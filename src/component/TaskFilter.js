@@ -1,4 +1,4 @@
-const TaskFilter = ({activeFilter, onFilterChange, taskCounts, searchQuery, onSearchChange, activePriorityFilter, onPriorityFilterChange, priorityCounts}) => {
+const TaskFilter = ({activeFilter, onFilterChange, taskCounts, searchQuery, onSearchChange, activePriorityFilter, onPriorityFilterChange, priorityCounts, activeDueDateFilter, onDueDateFilterChange, dueDateCounts}) => {
 
     const filters = [
         { key: 'all', label: 'All', count: taskCounts.all },
@@ -45,7 +45,7 @@ const TaskFilter = ({activeFilter, onFilterChange, taskCounts, searchQuery, onSe
             </div>
 
             {/* Priority Filter Tabs */}
-            <div className="flex space-x-1">
+            <div className="flex space-x-1 mb-3">
                 {[
                     { key: 'all', label: 'All Priorities', count: priorityCounts?.all || 0 },
                     { key: 'urgent', label: 'Urgent', count: priorityCounts?.urgent || 0, color: 'bg-red-100 text-red-700 border-red-300' },
@@ -69,6 +69,37 @@ const TaskFilter = ({activeFilter, onFilterChange, taskCounts, searchQuery, onSe
                                 : 'bg-white bg-opacity-70 text-gray-700'
                         }`}>
                             {priorityFilter.count}
+                        </span>
+                    </button>
+                ))}
+            </div>
+
+            {/* Due Date Filter Tabs */}
+            <div className="flex space-x-1">
+                {[
+                    { key: 'all', label: 'All Due Dates', count: dueDateCounts?.all || 0, icon: '📅' },
+                    { key: 'overdue', label: 'Overdue', count: dueDateCounts?.overdue || 0, icon: '🔴' },
+                    { key: 'due-soon', label: 'Due Soon', count: dueDateCounts?.['due-soon'] || 0, icon: '🟡' },
+                    { key: 'upcoming', label: 'Upcoming', count: dueDateCounts?.upcoming || 0, icon: '🔵' },
+                    { key: 'no-due-date', label: 'No Due Date', count: dueDateCounts?.['no-due-date'] || 0, icon: '⚪' }
+                ].map((dueDateFilter) => (
+                    <button
+                        key={dueDateFilter.key}
+                        onClick={() => onDueDateFilterChange(dueDateFilter.key)}
+                        className={`px-3 py-2 rounded-md text-sm font-medium transition-colors border ${
+                            activeDueDateFilter === dueDateFilter.key 
+                                ? 'bg-indigo-600 text-white border-indigo-600' 
+                                : 'bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-300 border-gray-300 dark:border-gray-600 hover:bg-gray-200 dark:hover:bg-gray-600'
+                        }`}
+                    >
+                        <span className="mr-1">{dueDateFilter.icon}</span>
+                        {dueDateFilter.label}
+                        <span className={`ml-1 px-1.5 py-0.5 rounded-full text-xs ${
+                            activeDueDateFilter === dueDateFilter.key 
+                                ? 'bg-indigo-500 text-white' 
+                                : 'bg-white dark:bg-gray-600 bg-opacity-70 text-gray-700 dark:text-gray-300'
+                        }`}>
+                            {dueDateFilter.count}
                         </span>
                     </button>
                 ))}

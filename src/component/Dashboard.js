@@ -4,6 +4,7 @@ import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
 import TaskFilter from "./TaskFilter";
 import { useTheme } from "../context/ThemeContext";
+import { getDueDateStatus } from "../utility/dueDateUtils";
 
 
 const Dashboard = ({onLogout}) => {
@@ -12,6 +13,7 @@ const Dashboard = ({onLogout}) => {
     const [task, setTask] = useState([]);
     const [activeFilter, setActiveFilter] = useState('all');
     const [activePriorityFilter, setActivePriorityFilter] = useState('all');
+    const [activeDueDateFilter, setActiveDueDateFilter] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
     const { isDarkMode, toggleDarkMode } = useTheme();
 
@@ -32,7 +34,7 @@ const Dashboard = ({onLogout}) => {
         console.log('Task added:', newTask);
     }
 
-    // Filter tasks by search query, status, and priority
+    // Filter tasks by search query, status, priority, and due date
     const filteredTask = task.filter(t => {
         // First filter by search query
         const matchesSearch = searchQuery === '' || 
@@ -48,9 +50,15 @@ const Dashboard = ({onLogout}) => {
         
         if (!matchesStatus) return false;
         
-        // Finally filter by priority
+        // Then filter by priority
         if(activePriorityFilter !== 'all') {
-            return t.priority === activePriorityFilter;
+            if (t.priority !== activePriorityFilter) return false;
+        }
+        
+        // Finally filter by due date
+        if(activeDueDateFilter !== 'all') {
+            const dueDateStatus = getDueDateStatus(t.dueDate, t.completed);
+            if (dueDateStatus !== activeDueDateFilter) return false;
         }
         
         return true;
@@ -87,13 +95,22 @@ const Dashboard = ({onLogout}) => {
         completed: searchFilteredTasks.filter(t => t.completed).length
     }
 
-    // Calculate priority counts based on search results
+    // Priority based on search result
     const priorityCounts = {
         all: searchFilteredTasks.length,
         urgent: searchFilteredTasks.filter(t => t.priority === 'urgent').length,
         high: searchFilteredTasks.filter(t => t.priority === 'high').length,
         medium: searchFilteredTasks.filter(t => t.priority === 'medium').length,
         low: searchFilteredTasks.filter(t => t.priority === 'low').length
+    }
+
+    //dueDate count based on search result
+    const dueDateCounts = {
+        all: searchFilteredTasks.length,
+        overdue: searchFilteredTasks.filter(t => getDueDateStatus(t.dueDate, t.completed) === 'overdue').length,
+        'due-soon': searchFilteredTasks.filter(t => getDueDateStatus(t.dueDate, t.completed) === 'due-soon').length,
+        upcoming: searchFilteredTasks.filter(t => getDueDateStatus(t.dueDate, t.completed) === 'upcoming').length,
+        'no-due-date': searchFilteredTasks.filter(t => getDueDateStatus(t.dueDate, t.completed) === 'no-due-date').length
     }
 
     return (
@@ -146,6 +163,9 @@ const Dashboard = ({onLogout}) => {
                     activePriorityFilter={activePriorityFilter}
                     onPriorityFilterChange={setActivePriorityFilter}
                     priorityCounts={priorityCounts}
+                    activeDueDateFilter={activeDueDateFilter}
+                    onDueDateFilterChange={setActiveDueDateFilter}
+                    dueDateCounts={dueDateCounts}
                 />
                 <TaskList
                     task={filteredTask}

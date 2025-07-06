@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { getDueDateStatus, formatDueDate, getDueDateColor, getDueDateIcon } from "../utility/dueDateUtils";
 
 
 const TaskItem = ({task, onEditTask, onDeleteTask, onToggleComplete}) => {
@@ -7,6 +8,7 @@ const TaskItem = ({task, onEditTask, onDeleteTask, onToggleComplete}) => {
     const [editTitle, setEditTitle] = useState(task.title);
     const [editDescription, setEditDescription] = useState(task.description || "");
     const [editPriority, setEditPriority] = useState(task.priority || 'low');
+    const [editDueDate, setEditDueDate] = useState(task.dueDate || '');
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
     const handleEdit = () => {
@@ -15,7 +17,8 @@ const TaskItem = ({task, onEditTask, onDeleteTask, onToggleComplete}) => {
                 ...task,
                 title: editTitle.trim(),
                 description: editDescription.trim(),
-                priority: editPriority
+                priority: editPriority,
+                dueDate: editDueDate || null
             })
             setIsEditing(false);
         }
@@ -26,6 +29,7 @@ const TaskItem = ({task, onEditTask, onDeleteTask, onToggleComplete}) => {
         setEditTitle(task.title);
         setEditDescription(task.description || "");
         setEditPriority(task.priority || 'low');
+        setEditDueDate(task.dueDate || '');
     }
 
     const formatDate = (dateString) => {
@@ -90,6 +94,19 @@ const TaskItem = ({task, onEditTask, onDeleteTask, onToggleComplete}) => {
                         </div>
                     </div>
                     
+                    {/* Due Date Input in Edit Mode */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-1 transition-colors duration-300">
+                            Due Date (Optional)
+                        </label>
+                        <input
+                            type="datetime-local"
+                            value={editDueDate}
+                            onChange={(e) => setEditDueDate(e.target.value)}
+                            className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-300"
+                        />
+                    </div>
+                    
                     <div className="flex space-x-2">
                         <button
                             onClick={handleEdit}
@@ -144,9 +161,19 @@ const TaskItem = ({task, onEditTask, onDeleteTask, onToggleComplete}) => {
                         )
                     }
 
-                    <p className="mt-2 text-xs text-gray-400 dark:text-gray-500 transition-colors duration-300">
-                        Created: {formatDate(task.createdAt)}
-                    </p>
+                    <div className="mt-2 space-y-1">
+                        <p className="text-xs text-gray-400 dark:text-gray-500 transition-colors duration-300">
+                            Created: {formatDate(task.createdAt)}
+                        </p>
+                        {task.dueDate && (
+                            <div className="flex items-center space-x-1">
+                                <span className="text-sm">{getDueDateIcon(getDueDateStatus(task.dueDate, task.completed))}</span>
+                                <span className={`text-xs font-medium ${getDueDateColor(getDueDateStatus(task.dueDate, task.completed))}`}>
+                                    Due: {formatDueDate(task.dueDate)}
+                                </span>
+                            </div>
+                        )}
+                    </div>
                 </div>
 
                 <div className="flex space-x-2 ml-4">
