@@ -6,6 +6,7 @@ const TaskItem = ({task, onEditTask, onDeleteTask, onToggleComplete}) => {
     const [isEditing, setIsEditing] = useState(false);
     const [editTitle, setEditTitle] = useState(task.title);
     const [editDescription, setEditDescription] = useState(task.description || "");
+    const [editPriority, setEditPriority] = useState(task.priority || 'low');
     const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
 
     const handleEdit = () => {
@@ -13,7 +14,8 @@ const TaskItem = ({task, onEditTask, onDeleteTask, onToggleComplete}) => {
             onEditTask(task.id, {
                 ...task,
                 title: editTitle.trim(),
-                description: editDescription.trim()
+                description: editDescription.trim(),
+                priority: editPriority
             })
             setIsEditing(false);
         }
@@ -23,6 +25,7 @@ const TaskItem = ({task, onEditTask, onDeleteTask, onToggleComplete}) => {
         setIsEditing(false);
         setEditTitle(task.title);
         setEditDescription(task.description || "");
+        setEditPriority(task.priority || 'low');
     }
 
     const formatDate = (dateString) => {
@@ -58,6 +61,35 @@ const TaskItem = ({task, onEditTask, onDeleteTask, onToggleComplete}) => {
                         className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
                         placeholder="Edit task description"
                     />
+                    
+                    {/* Priority Selector in Edit Mode */}
+                    <div>
+                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                            Priority Level
+                        </label>
+                        <div className="grid grid-cols-4 gap-2">
+                            {[
+                                { value: 'low', label: 'Low', color: 'bg-gray-100 text-gray-700 border-gray-300', activeColor: 'bg-gray-200 border-gray-400' },
+                                { value: 'medium', label: 'Medium', color: 'bg-blue-100 text-blue-700 border-blue-300', activeColor: 'bg-blue-200 border-blue-400' },
+                                { value: 'high', label: 'High', color: 'bg-orange-100 text-orange-700 border-orange-300', activeColor: 'bg-orange-200 border-orange-400' },
+                                { value: 'urgent', label: 'Urgent', color: 'bg-red-100 text-red-700 border-red-300', activeColor: 'bg-red-200 border-red-400' }
+                            ].map((priorityOption) => (
+                                <button
+                                    key={priorityOption.value}
+                                    type="button"
+                                    onClick={() => setEditPriority(priorityOption.value)}
+                                    className={`px-2 py-1 text-xs font-medium rounded border transition-colors ${
+                                        editPriority === priorityOption.value 
+                                            ? priorityOption.activeColor 
+                                            : priorityOption.color + ' hover:' + priorityOption.activeColor.split(' ')[0]
+                                    }`}
+                                >
+                                    {priorityOption.label}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                    
                     <div className="flex space-x-2">
                         <button
                             onClick={handleEdit}
@@ -93,6 +125,15 @@ const TaskItem = ({task, onEditTask, onDeleteTask, onToggleComplete}) => {
                         <h3 className={`text-lg font-medium ${task.completed ? 'line-through text-gray-500' : 'text-gray-900'}`}>
                             {task.title}
                         </h3>
+                        {/* Priority Badge */}
+                        <span className={`px-2 py-1 text-xs font-medium rounded-full ${
+                            task.priority === 'low' ? 'bg-gray-100 text-gray-700' :
+                            task.priority === 'medium' ? 'bg-blue-100 text-blue-700' :
+                            task.priority === 'high' ? 'bg-orange-100 text-orange-700' :
+                            'bg-red-100 text-red-700'
+                        }`}>
+                            {task.priority ? task.priority.charAt(0).toUpperCase() + task.priority.slice(1) : 'Low'}
+                        </span>
                     </div>
 
                     {

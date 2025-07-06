@@ -1,4 +1,4 @@
-const TaskFilter = ({activeFilter, onFilterChange, taskCounts, searchQuery, onSearchChange}) => {
+const TaskFilter = ({activeFilter, onFilterChange, taskCounts, searchQuery, onSearchChange, activePriorityFilter, onPriorityFilterChange, priorityCounts}) => {
 
     const filters = [
         { key: 'all', label: 'All', count: taskCounts.all },
@@ -26,8 +26,8 @@ const TaskFilter = ({activeFilter, onFilterChange, taskCounts, searchQuery, onSe
                 </div>
             </div>
 
-            {/* Filter Tabs */}
-            <div className="flex space-x-1">
+            {/* Status Filter Tabs */}
+            <div className="flex space-x-1 mb-3">
                 {
                     filters.map((filter) => (
                         <button
@@ -42,6 +42,36 @@ const TaskFilter = ({activeFilter, onFilterChange, taskCounts, searchQuery, onSe
                         </button>
                     ))
                 }
+            </div>
+
+            {/* Priority Filter Tabs */}
+            <div className="flex space-x-1">
+                {[
+                    { key: 'all', label: 'All Priorities', count: priorityCounts?.all || 0 },
+                    { key: 'urgent', label: 'Urgent', count: priorityCounts?.urgent || 0, color: 'bg-red-100 text-red-700 border-red-300' },
+                    { key: 'high', label: 'High', count: priorityCounts?.high || 0, color: 'bg-orange-100 text-orange-700 border-orange-300' },
+                    { key: 'medium', label: 'Medium', count: priorityCounts?.medium || 0, color: 'bg-blue-100 text-blue-700 border-blue-300' },
+                    { key: 'low', label: 'Low', count: priorityCounts?.low || 0, color: 'bg-gray-100 text-gray-700 border-gray-300' }
+                ].map((priorityFilter) => (
+                    <button
+                        key={priorityFilter.key}
+                        onClick={() => onPriorityFilterChange(priorityFilter.key)}
+                        className={`px-3 py-2 rounded-md text-sm font-medium transition-colors border ${
+                            activePriorityFilter === priorityFilter.key 
+                                ? 'bg-indigo-600 text-white border-indigo-600' 
+                                : priorityFilter.color + ' hover:bg-opacity-80'
+                        }`}
+                    >
+                        {priorityFilter.label}
+                        <span className={`ml-1 px-1.5 py-0.5 rounded-full text-xs ${
+                            activePriorityFilter === priorityFilter.key 
+                                ? 'bg-indigo-500 text-white' 
+                                : 'bg-white bg-opacity-70 text-gray-700'
+                        }`}>
+                            {priorityFilter.count}
+                        </span>
+                    </button>
+                ))}
             </div>
         </div>
     )

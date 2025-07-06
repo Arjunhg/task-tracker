@@ -10,6 +10,7 @@ const Dashboard = ({onLogout}) => {
     const [username, setUsername] = useState('');
     const [task, setTask] = useState([]);
     const [activeFilter, setActiveFilter] = useState('all');
+    const [activePriorityFilter, setActivePriorityFilter] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
@@ -29,8 +30,9 @@ const Dashboard = ({onLogout}) => {
         console.log('Task added:', newTask);
     }
 
-    // Filter tasks by both search query and filter status
+    // Filter tasks by search query, status, and priority
     const filteredTask = task.filter(t => {
+        // First filter by search query
         const matchesSearch = searchQuery === '' || 
             t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
             (t.description && t.description.toLowerCase().includes(searchQuery.toLowerCase()));
@@ -38,8 +40,17 @@ const Dashboard = ({onLogout}) => {
         if (!matchesSearch) return false;
         
         // Then filter by status
-        if(activeFilter==='completed') return t.completed;
-        if(activeFilter==='pending') return !t.completed;
+        let matchesStatus = true;
+        if(activeFilter==='completed') matchesStatus = t.completed;
+        if(activeFilter==='pending') matchesStatus = !t.completed;
+        
+        if (!matchesStatus) return false;
+        
+        // Finally filter by priority
+        if(activePriorityFilter !== 'all') {
+            return t.priority === activePriorityFilter;
+        }
+        
         return true;
     })
 
@@ -74,6 +85,15 @@ const Dashboard = ({onLogout}) => {
         completed: searchFilteredTasks.filter(t => t.completed).length
     }
 
+    // Calculate priority counts based on search results
+    const priorityCounts = {
+        all: searchFilteredTasks.length,
+        urgent: searchFilteredTasks.filter(t => t.priority === 'urgent').length,
+        high: searchFilteredTasks.filter(t => t.priority === 'high').length,
+        medium: searchFilteredTasks.filter(t => t.priority === 'medium').length,
+        low: searchFilteredTasks.filter(t => t.priority === 'low').length
+    }
+
     return (
         <div className="min-h-screen bg-gray-50">
             {/* Header */}
@@ -103,6 +123,9 @@ const Dashboard = ({onLogout}) => {
                     taskCounts={taskCounts}
                     searchQuery={searchQuery}
                     onSearchChange={setSearchQuery}
+                    activePriorityFilter={activePriorityFilter}
+                    onPriorityFilterChange={setActivePriorityFilter}
+                    priorityCounts={priorityCounts}
                 />
                 <TaskList
                     task={filteredTask}

@@ -5,6 +5,7 @@ const TaskForm = ({onAddTask}) => {
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
+    const [priority, setPriority] = useState('low'); // Default priority
     const [error, setError] = useState('');
 
     const handleSubmit = (e) => {
@@ -18,7 +19,8 @@ const TaskForm = ({onAddTask}) => {
         const newtask = {
             id: Date.now(),
             title: title.trim(),
-            description: description.trim() ,
+            description: description.trim(),
+            priority: priority, // Add priority to task object
             completed: false,
             createdAt: new Date().toISOString(),
         }
@@ -27,6 +29,7 @@ const TaskForm = ({onAddTask}) => {
 
         setTitle('');
         setDescription('');
+        setPriority('low'); // Reset priority to default
         setError('');
     }
 
@@ -72,6 +75,33 @@ const TaskForm = ({onAddTask}) => {
                             setError('');
                         }}
                     />
+                </div>
+
+                <div>
+                    <label className="block text-sm font-medium text-gray-700 mb-2">
+                        Priority Level
+                    </label>
+                    <div className="grid grid-cols-4 gap-2">
+                        {[
+                            { value: 'low', label: 'Low', color: 'bg-gray-100 text-gray-700 border-gray-300', activeColor: 'bg-gray-200 border-gray-400' },
+                            { value: 'medium', label: 'Medium', color: 'bg-blue-100 text-blue-700 border-blue-300', activeColor: 'bg-blue-200 border-blue-400' },
+                            { value: 'high', label: 'High', color: 'bg-orange-100 text-orange-700 border-orange-300', activeColor: 'bg-orange-200 border-orange-400' },
+                            { value: 'urgent', label: 'Urgent', color: 'bg-red-100 text-red-700 border-red-300', activeColor: 'bg-red-200 border-red-400' }
+                        ].map((priorityOption) => (
+                            <button
+                                key={priorityOption.value}
+                                type="button"
+                                onClick={() => setPriority(priorityOption.value)}
+                                className={`px-3 py-2 text-sm font-medium rounded-md border transition-colors ${
+                                    priority === priorityOption.value 
+                                        ? priorityOption.activeColor 
+                                        : priorityOption.color 
+                                }`}
+                            >
+                                {priorityOption.label}
+                            </button>
+                        ))}
+                    </div>
                 </div>
 
                 {
