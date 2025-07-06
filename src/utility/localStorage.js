@@ -35,3 +35,11 @@ export const getUser = () => {
 export const logoutUser = () => {
     removeFromLocalStorage('currentUser');
 }
+
+export const saveTasks = (tasks) => {
+    saveToLocalStorage('tasks', tasks);
+}
+
+export const getTask = () => {
+    return getFromLocalStorage('tasks', []);
+}

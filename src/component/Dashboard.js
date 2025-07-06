@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { getUser, logoutUser } from "../utility/localStorage";
+import { getTask, getUser, logoutUser, saveTasks } from "../utility/localStorage";
 import TaskForm from "./TaskForm";
 import TaskList from "./TaskList";
 import TaskFilter from "./TaskFilter";
@@ -16,12 +16,22 @@ const Dashboard = ({onLogout}) => {
     const [activeDueDateFilter, setActiveDueDateFilter] = useState('all');
     const [searchQuery, setSearchQuery] = useState('');
     const { isDarkMode, toggleDarkMode } = useTheme();
+    const [isInitialized, setIsInitialized] = useState(false);
 
     useEffect(() => {
+        const savedTasks = getTask();
         const savedUsername = getUser();
 
+        setTask(savedTasks);
         setUsername(savedUsername || 'Guest');
-    },[]);
+        setIsInitialized(true);
+    },[])
+
+    useEffect(() => {
+        if(isInitialized){
+            saveTasks(task);
+        }
+    },[task, isInitialized])
 
     const handleLogout = () => {
         logoutUser();
