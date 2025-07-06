@@ -16,10 +16,22 @@ export const getFromLocalStorage = (key, defaultValue=null) => {
     }
 }
 
+export const removeFromLocalStorage = (key) => {
+    try {
+        localStorage.removeItem(key);
+    } catch (error) {
+        console.error('Error removing from localStorage:', error);
+    }
+}
+
 export const saveUser = (username) => {
     saveToLocalStorage('currentUser', username);
 }
 
 export const getUser = () => {
     return getFromLocalStorage('currentUser', null);
+}
+
+export const logoutUser = () => {
+    removeFromLocalStorage('currentUser');
 }

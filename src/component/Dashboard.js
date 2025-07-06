@@ -1,0 +1,56 @@
+import { useEffect, useState } from "react";
+import { getUser, logoutUser } from "../utility/localStorage";
+import TaskForm from "./TaskForm";
+
+
+const Dashboard = ({onLogout}) => {
+
+    const [username, setUsername] = useState('');
+    const [task, setTask] = useState([]);
+
+    useEffect(() => {
+        const savedUsername = getUser();
+
+        setUsername(savedUsername || 'Guest');
+    },[]);
+
+    const handleLogout = () => {
+        logoutUser();
+        onLogout();
+    }
+
+    const handleAddTask = (newTask) => {
+        // task.push(newTask); //Mutate original array
+        setTask([...task, newTask]);
+        console.log('Task added:', newTask);
+    }
+
+    return (
+        <div className="min-h-screen bg-gray-50">
+            {/* Header */}
+            <header className="bg-white shadow-sm border-b">
+                <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8">
+                    <div className="flex justify-between items-center py-4">
+                        <div>
+                            <h1 className="text-2xl font-bold text-gray-900">Task Tracker</h1>
+                            <p className="text-sm text-gray-600">Welcome back, {username}</p>
+                        </div>
+                        <button
+                            onClick={handleLogout}
+                            className="px-4 py-2 text-sm font-medium text-gray-700 bg-gray-100 rounded-md hover:bg-gray-200 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 transition-colors"
+                        >
+                            Logout
+                        </button>
+                    </div>
+                </div>
+            </header>
+
+            {/* Main */}
+            <main>
+                <TaskForm onAddTask={handleAddTask}/>
+            </main>
+        </div>
+    )
+}
+
+export default Dashboard;

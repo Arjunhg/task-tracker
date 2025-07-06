@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import Login from "./component/Login";
 import { getUser } from "./utility/localStorage";
+import Dashboard from "./component/Dashboard";
 
 
 function App() {
@@ -18,20 +19,15 @@ function App() {
     setIsAuth(true);
   }
 
+  const handleLogout = () => {
+    setIsAuth(false);
+  }
+
   return (
     <div>
       {
         isAuth ? (
-          <div className="text-center mt-10">
-            <h1 className="text-2xl font-bold">Welcome Back!</h1>
-            <p className="mt-2">You are already logged in.</p>
-            <button 
-              className="mt-4 px-4 py-2 bg-blue-500 text-white rounded"
-              onClick={() => setIsAuth(false)}
-            >
-              Logout
-            </button>
-          </div>
+          <Dashboard onLogout={handleLogout}/>
         ) : (
           <Login onLogin={handleLogin}/>
         )
