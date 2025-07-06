@@ -1,6 +1,6 @@
 import TaskItem from "./TaskItem";
 
-const TaskList = ({task, onEditTask, onDeleteTask, onToggleComplete}) => {
+const TaskList = ({task, onEditTask, onDeleteTask, onToggleComplete, totalTasks = 0}) => {
 
     if(task.length===0){
         return (
@@ -11,10 +11,10 @@ const TaskList = ({task, onEditTask, onDeleteTask, onToggleComplete}) => {
                     </svg>
                 </div>
                 <h3 className="text-lg font-medium text-gray-900 mb-2">
-                    No task found
+                    No tasks found
                 </h3>
                 <p className="text-gray-500">
-                    Get started by adding your first task
+                    {totalTasks === 0 ? "Get started by adding your first task" : "No tasks match your search criteria"}
                 </p>
             </div>
         );

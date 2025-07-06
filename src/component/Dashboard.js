@@ -10,6 +10,7 @@ const Dashboard = ({onLogout}) => {
     const [username, setUsername] = useState('');
     const [task, setTask] = useState([]);
     const [activeFilter, setActiveFilter] = useState('all');
+    const [searchQuery, setSearchQuery] = useState('');
 
     useEffect(() => {
         const savedUsername = getUser();
@@ -28,7 +29,15 @@ const Dashboard = ({onLogout}) => {
         console.log('Task added:', newTask);
     }
 
+    // Filter tasks by both search query and filter status
     const filteredTask = task.filter(t => {
+        const matchesSearch = searchQuery === '' || 
+            t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            (t.description && t.description.toLowerCase().includes(searchQuery.toLowerCase()));
+        
+        if (!matchesSearch) return false;
+        
+        // Then filter by status
         if(activeFilter==='completed') return t.completed;
         if(activeFilter==='pending') return !t.completed;
         return true;
@@ -53,10 +62,16 @@ const Dashboard = ({onLogout}) => {
         setTask(task.filter(t => t.id !== taskId));
     }
 
+    const searchFilteredTasks = task.filter(t => {
+        return searchQuery === '' || 
+            t.title.toLowerCase().includes(searchQuery.toLowerCase()) ||
+            (t.description && t.description.toLowerCase().includes(searchQuery.toLowerCase()));
+    });
+
     const taskCounts = {
-        all: task.length,
-        pending: task.filter(t => !t.completed).length,
-        completed: task.filter(t => t.completed).length
+        all: searchFilteredTasks.length,
+        pending: searchFilteredTasks.filter(t => !t.completed).length,
+        completed: searchFilteredTasks.filter(t => t.completed).length
     }
 
     return (
@@ -86,12 +101,15 @@ const Dashboard = ({onLogout}) => {
                     activeFilter={activeFilter}
                     onFilterChange={setActiveFilter}
                     taskCounts={taskCounts}
+                    searchQuery={searchQuery}
+                    onSearchChange={setSearchQuery}
                 />
                 <TaskList
                     task={filteredTask}
                     onToggleComplete={handleToggleComplete}
                     onEditTask={handleEditTask}
                     onDeleteTask={handleDeleteTask}
+                    totalTasks={task.length}
                 />
             </main>
         </div>
