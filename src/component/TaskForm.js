@@ -18,7 +18,7 @@ const TaskForm = ({onAddTask}) => {
         const newtask = {
             id: Date.now(),
             title: title.trim(),
-            description: description.trim() || 'No description provided',
+            description: description.trim() ,
             completed: false,
             createdAt: new Date().toISOString(),
         }
