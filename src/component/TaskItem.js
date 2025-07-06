@@ -45,26 +45,26 @@ const TaskItem = ({task, onEditTask, onDeleteTask, onToggleComplete}) => {
 
     if(isEditing){
         return(
-            <div className="bg-white rounded-lg shadow-md p-4 mb-4 border-l-4 border-blue-500">
+            <div className="bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-4 border-l-4 border-blue-500 transition-colors duration-300">
                 <div className="space-y-3">
                     <input
                         type="text"
                         value={editTitle}
                         onChange={(e) => setEditTitle(e.target.value)}
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-medium"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 font-medium transition-colors duration-300"
                         placeholder="Edit task title"
                     />
                     <textarea
                         value={editDescription}
                         onChange={(e) => setEditDescription(e.target.value)}
                         rows="2"
-                        className="w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500"
+                        className="w-full px-3 py-2 border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-900 dark:text-white placeholder-gray-500 dark:placeholder-gray-400 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition-colors duration-300"
                         placeholder="Edit task description"
                     />
                     
                     {/* Priority Selector in Edit Mode */}
                     <div>
-                        <label className="block text-sm font-medium text-gray-700 mb-2">
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2 transition-colors duration-300">
                             Priority Level
                         </label>
                         <div className="grid grid-cols-4 gap-2">
@@ -111,7 +111,7 @@ const TaskItem = ({task, onEditTask, onDeleteTask, onToggleComplete}) => {
 
     return (
         <div
-            className={`bg-white rounded-lg shadow-md p-4 mb-4 border-l-4 ${task.completed ? 'border-green-500 bg-green-50' : 'border-blue-500'}`}
+            className={`bg-white dark:bg-gray-800 rounded-lg shadow-md p-4 mb-4 border-l-4 transition-colors duration-300 ${task.completed ? 'border-green-500 bg-green-50 dark:bg-green-900/20' : 'border-blue-500'}`}
         >
             <div className="flex items-start justify-between">
                 <div className="flex-1">
@@ -122,7 +122,7 @@ const TaskItem = ({task, onEditTask, onDeleteTask, onToggleComplete}) => {
                             onChange={() => onToggleComplete(task.id)}
                             className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
                         />
-                        <h3 className={`text-lg font-medium ${task.completed ? 'line-through text-gray-500' : 'text-gray-900'}`}>
+                        <h3 className={`text-lg font-medium transition-colors duration-300 ${task.completed ? 'line-through text-gray-500 dark:text-gray-400' : 'text-gray-900 dark:text-white'}`}>
                             {task.title}
                         </h3>
                         {/* Priority Badge */}
@@ -138,13 +138,13 @@ const TaskItem = ({task, onEditTask, onDeleteTask, onToggleComplete}) => {
 
                     {
                         task.description && (
-                            <p className={`mt-2 text-sm ${task.completed ? 'text-gray-400' : 'text-gray-600'}`}>
+                            <p className={`mt-2 text-sm transition-colors duration-300 ${task.completed ? 'text-gray-400 dark:text-gray-500' : 'text-gray-600 dark:text-gray-400'}`}>
                                 {task.description}
                             </p>
                         )
                     }
 
-                    <p className="mt-2 text-xs text-gray-400">
+                    <p className="mt-2 text-xs text-gray-400 dark:text-gray-500 transition-colors duration-300">
                         Created: {formatDate(task.createdAt)}
                     </p>
                 </div>

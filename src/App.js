@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import Login from "./component/Login";
 import { getUser } from "./utility/localStorage";
 import Dashboard from "./component/Dashboard";
+import { ThemeProvider } from "./context/ThemeContext";
 
 
 function App() {
@@ -24,15 +25,17 @@ function App() {
   }
 
   return (
-    <div>
-      {
-        isAuth ? (
-          <Dashboard onLogout={handleLogout}/>
-        ) : (
-          <Login onLogin={handleLogin}/>
-        )
-      }
-    </div>
+    <ThemeProvider>
+      <div>
+        {
+          isAuth ? (
+            <Dashboard onLogout={handleLogout}/>
+          ) : (
+            <Login onLogin={handleLogin}/>
+          )
+        }
+      </div>
+    </ThemeProvider>
   );
 }
 
