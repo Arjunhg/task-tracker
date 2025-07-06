@@ -1,70 +1,133 @@
-# Getting Started with Create React App
+# Personal Task Tracker
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## 📖 Description
 
-## Available Scripts
+A modern, responsive personal task management application built with React. This application allows users to create, manage, and organize their tasks with advanced filtering capabilities, priority levels, due dates, and a beautiful dark/light mode interface. Perfect for personal productivity and task organization.
 
-In the project directory, you can run:
+## 🚀 Features
 
-### `npm start`
+### Core Functionality
+- **🔐 Simple Login System** - Username-based authentication with localStorage persistence
+- **📝 Task Management** - Create, edit, delete, and toggle completion status of tasks
+- **📋 Rich Task Details** - Title, description, priority levels, and due dates
+- **🔍 Advanced Filtering** - Filter by completion status, priority, due date, and search functionality
+- **💾 Data Persistence** - All data saved in localStorage for seamless experience
+- **🌙 Dark/Light Mode** - Toggle between dark and light themes for comfortable usage
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in your browser.
+### Advanced Features
+- **🎯 Priority Levels** - 4 priority levels: Low, Medium, High, and Urgent with color coding
+- **📅 Due Date Management** - Set and track due dates with overdue indicators
+- **🔎 Smart Search** - Search through task titles and descriptions
+- **📱 Responsive Design** - Works perfectly on desktop, tablet, and mobile devices
+- **⚡ Smooth Transitions** - Beautiful animations and transitions throughout the app
 
-The page will reload when you make changes.\
-You may also see any lint errors in the console.
+### User Experience
+- **🎨 Modern UI** - Clean, intuitive interface built with Tailwind CSS
+- **🔄 Real-time Updates** - Instant feedback for all user actions
+- **✅ Confirmation Dialogs** - Safe deletion with confirmation prompts
+- **📈 Visual Feedback** - Clear visual indicators for task status and priority
 
-### `npm test`
+## 🛠 Setup Instructions
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+1. **Clone the repository**
+   ```bash
+   git clone https://github.com/Arjunhg/task-tracker.git
+   cd task-tracker
+   ```
 
-### `npm run build`
+2. **Install dependencies**
+   ```bash
+   npm install
+   ```
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+3. **Start the development server**
+   ```bash
+   npm start
+   ```
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+4. **Open your browser**
+   Navigate to [http://localhost:3000](http://localhost:3000) to view the application
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+## 🧰 Technologies Used
 
-### `npm run eject`
+- **React.js** - Frontend framework with functional components and hooks
+- **Tailwind CSS** - Utility-first CSS framework for styling
+- **localStorage API** - Client-side data persistence
+- **React Context API** - State management for theme switching
+- **Create React App** - Development environment and build tools
 
-**Note: this is a one-way operation. Once you `eject`, you can't go back!**
+## 🔗 Live Demo
 
-If you aren't satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+🌐 **Live Application**: [https://task-tracker-nine-iota.vercel.app/](https://task-tracker-nine-iota.vercel.app/)
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you're on your own.
+📂 **GitHub Repository**: [https://github.com/Arjunhg/task-tracker](https://github.com/Arjunhg/task-tracker)
 
-You don't have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn't feel obligated to use this feature. However we understand that this tool wouldn't be useful if you couldn't customize it when you are ready for it.
+## 🖼 Screenshots
 
-## Learn More
+### Home/Login Page
+![Home Page](./public/Home.png)
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### Main Dashboard
+![Dashboard](./public/Dashboard.png)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+## 📁 Project Structure
 
-### Code Splitting
+```
+task-tracker/
+├── public/
+│   └── index.html
+├── src/
+│   ├── component/
+│   │   ├── Dashboard.js      # Main dashboard component
+│   │   ├── Login.js          # Login form component
+│   │   ├── TaskFilter.js     # Filtering and search functionality
+│   │   ├── TaskForm.js       # Task creation form
+│   │   ├── TaskItem.js       # Individual task display
+│   │   └── TaskList.js       # Task list container
+│   ├── context/
+│   │   └── ThemeContext.js   # Dark/light mode context
+│   ├── utility/
+│   │   ├── dueDateUtils.js   # Due date calculation utilities
+│   │   └── localStorage.js   # Data persistence utilities
+│   ├── App.js               # Main application component
+│   └── index.js             # Application entry point
+├── package.json
+└── tailwind.config.js
+```
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/code-splitting](https://facebook.github.io/create-react-app/docs/code-splitting)
+## 🎯 Key Features Explained
 
-### Analyzing the Bundle Size
+### Task Management
+- **Create Tasks**: Add new tasks with title, description, priority, and due date
+- **Edit Tasks**: Modify existing tasks inline with real-time updates
+- **Delete Tasks**: Remove tasks with confirmation dialog for safety
+- **Toggle Completion**: Mark tasks as complete/incomplete with visual feedback
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size](https://facebook.github.io/create-react-app/docs/analyzing-the-bundle-size)
+### Advanced Filtering
+- **Status Filter**: View All, Pending, or Completed tasks
+- **Priority Filter**: Filter by Low, Medium, High, or Urgent priority
+- **Due Date Filter**: View Overdue, Due Soon, Upcoming, or No Due Date tasks
+- **Search**: Find tasks by title or description content
 
-### Making a Progressive Web App
+### Data Persistence
+- All user data (tasks, username) is automatically saved to localStorage
+- Data persists across browser sessions and page refreshes
+- No external database required - everything runs locally
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app](https://facebook.github.io/create-react-app/docs/making-a-progressive-web-app)
+## 🚀 Deployment
 
-### Advanced Configuration
+This application is deployed on **Vercel** and can be accessed at:
+[https://task-tracker-nine-iota.vercel.app/](https://task-tracker-nine-iota.vercel.app/)
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/advanced-configuration](https://facebook.github.io/create-react-app/docs/advanced-configuration)
+### Build for Production
+```bash
+npm run build
+```
 
-### Deployment
+## 👨‍💻 Author
 
-This section has moved here: [https://facebook.github.io/create-react-app/docs/deployment](https://facebook.github.io/create-react-app/docs/deployment)
+**Arjun HG**
+- GitHub: [@Arjunhg](https://github.com/Arjunhg)
+- Project: [Task Tracker](https://github.com/Arjunhg/task-tracker)
 
-### `npm run build` fails to minify
-
-This section has moved here: [https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify](https://facebook.github.io/create-react-app/docs/troubleshooting#npm-run-build-fails-to-minify)
+---
