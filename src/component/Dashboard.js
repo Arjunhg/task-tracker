@@ -1,12 +1,14 @@
 import { useEffect, useState } from "react";
 import { getUser, logoutUser } from "../utility/localStorage";
 import TaskForm from "./TaskForm";
+import TaskList from "./TaskList";
 
 
 const Dashboard = ({onLogout}) => {
 
     const [username, setUsername] = useState('');
     const [task, setTask] = useState([]);
+    const [activeFilter, setActiveFilter] = useState('all');
 
     useEffect(() => {
         const savedUsername = getUser();
@@ -23,6 +25,31 @@ const Dashboard = ({onLogout}) => {
         // task.push(newTask); //Mutate original array
         setTask([...task, newTask]);
         console.log('Task added:', newTask);
+    }
+
+    const filteredTask = task.filter(t => {
+        if(activeFilter==='completed') return t.completed;
+        if(activeFilter==='pending') return !t.completed;
+        return true;
+    })
+
+    const handleToggleComplete = (taskId) => {
+        setTask(task.map(t => 
+            t.id===taskId ? {
+                ...t,
+                completed: !t.completed
+            } : t
+        ))
+    }
+
+    const handleEditTask = (taskId, updatedTask) => {
+        setTask(task.map(t => 
+            t.id===taskId ? updatedTask : t
+        ))
+    }
+
+    const handleDeleteTask = (taskId) => {
+        setTask(task.filter(t => t.id !== taskId));
     }
 
     return (
@@ -46,8 +73,14 @@ const Dashboard = ({onLogout}) => {
             </header>
 
             {/* Main */}
-            <main>
+            <main className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
                 <TaskForm onAddTask={handleAddTask}/>
+                <TaskList
+                    task={filteredTask}
+                    onToggleComplete={handleToggleComplete}
+                    onEditTask={handleEditTask}
+                    onDeleteTask={handleDeleteTask}
+                />
             </main>
         </div>
     )
