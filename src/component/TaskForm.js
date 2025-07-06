@@ -5,8 +5,8 @@ const TaskForm = ({onAddTask}) => {
 
     const [title, setTitle] = useState('');
     const [description, setDescription] = useState('');
-    const [priority, setPriority] = useState('low'); // Default priority
-    const [dueDate, setDueDate] = useState(''); // Due date state
+    const [priority, setPriority] = useState('low'); 
+    const [dueDate, setDueDate] = useState(''); 
     const [error, setError] = useState('');
 
     const handleSubmit = (e) => {
@@ -22,7 +22,7 @@ const TaskForm = ({onAddTask}) => {
             title: title.trim(),
             description: description.trim(),
             priority: priority,
-            dueDate: dueDate || null, // Add due date to task object
+            dueDate: dueDate || null, // null to handle ""
             completed: false,
             createdAt: new Date().toISOString(),
         }
@@ -31,8 +31,8 @@ const TaskForm = ({onAddTask}) => {
 
         setTitle('');
         setDescription('');
-        setPriority('low'); // Reset priority to default
-        setDueDate(''); // Reset due date
+        setPriority('low'); 
+        setDueDate(''); 
         setError('');
     }
 
